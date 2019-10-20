@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<title>Gallery</title>
+
+    <script language="javascript">
+        function Painting(name, artist, price, s_image, l_image)
+        {
+            this.name = name;
+            this.artist = artist;
+            this.price = price;
+            this.s_image = s_image;
+            this.l_image = l_image;
+        }
+
+        var paintings = new Array();
+        paintings[0] = new Painting("Composition VIII", "Wassily Kandinsky", 15000000, "images/miro-blue-ii-Small.jpg", "images/miro-blue-ii.jpg");
+        paintings[1] = new Painting("Poppies", "Vincent Van Gogh", 30000000, "images/vangogh-poppies-Small.jpeg", "images/vangogh-poppies.jpeg");
+        paintings[2] = new Painting("Blue II", "Joan Miró", 20000000, "images/kandinsky-composition-VIII-Small.jpg", "images/kandinsky-composition-VIII.jpg");
+        paintings[3] = new Painting("Bouquet of Flowers", "Pablo Picasso", 50000000, "images/Picasso-Bouquet-Of-Flowers-Small.jpg", "images/Picasso-Bouquet-Of-Flowers.jpg");
+        paintings[4] = new Painting("The Romanian Blouse", "Henri Matisse", 30000000, "images/Matisse-The-Romanian-Blouse-Small.jpg", "images/Matisse-The-Romanian-Blouse.jpg");
+    </script>
+
+    <style>
+        body {
+            background-color: #0B192D;
+        }
+        h1 {
+            font-family: 'Amatic SC', cursive;
+            color: #D83E2F;
+            text-align: center;
+            font-size: 50px;
+        }
+        #thumbnail {
+            background-color: rgb(210,209,207,0.6);
+            display: inline-block;
+        }
+        .thumbImg {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+        #thumbnail-container {
+            text-align: center;
+        }
+        #image-container {
+            height: 350px;
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+        #displayImg {
+            height: 325px;
+        }
+        #infoPanel {
+            font-family: 'Amatic SC', cursive;
+            font-size: 25px;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 35%;
+            width: 60%;
+            visibility: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Labell Art Gallery</h1>
+
+    <div id="infoPane"></div>
+
+    <div id="image-container">
+        <script>
+            var defaultImg = "images/Picasso-Bouquet-Of-Flowers.jpg";
+            document.write("<img id=displayImg src=" + defaultImg + " >");
+        </script>
+        <div id="infoPanel">Please work</div>
+    </div>
+
+    <div id="thumbnail-container">
+        <div id="thumbnail">
+        <script>
+            for (i = 0; i < paintings.length; i++) {
+                document.write("<img class=thumbImg src=" + paintings[i].s_image + " height=80px id=" + i + ">");
+            }
+        </script>
+        </div>
+    </div>
+
+    <script>
+        $( document ).ready(addEvents());
+
+        function addEvents() {
+            var timeout;
+            $('.thumbImg').each (function () {
+                $(this).hover(function() // change display image
+                    {
+                        // reset info panel
+                        clearTimeout(timeout);
+                        $('#infoPanel').css('visibility', 'hidden');
+                        $('#displayImg').css('filter', 'brightness(100%)');
+
+                        var thumbID = $(this).attr('id');
+                        document.getElementById("displayImg").src = 
+                            paintings[thumbID].l_image;
+                    })
+                $(this).click(function() // display info panel
+                    {
+                        var thumbID = $(this).attr('id');
+                        document.getElementById("displayImg").src = 
+                            paintings[thumbID].l_image;
+
+                        var paintingInfo = paintings[thumbID].name + "<br>"
+                            + paintings[thumbID].artist + "<br>$"
+                            + paintings[thumbID].price;
+
+                        $('#displayImg').css('filter', 'brightness(7%)');
+                        $('#infoPanel').html(paintingInfo);
+                        $('#infoPanel').css('visibility', 'visible');
+
+
+                        timeout = setTimeout(function(){
+                            $('#infoPanel').css('visibility', 'hidden');
+                            $('#displayImg').css('filter', 'brightness(100%)');
+                        }, 5000)
+                    })
+            });
+
+        }
+    </script>
+
+</body>
+</html>
